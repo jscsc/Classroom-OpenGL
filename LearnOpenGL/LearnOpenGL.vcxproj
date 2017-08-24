@@ -117,7 +117,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\LearnOpenGL\GLAD\src\glad.c" />
+    <ClCompile Include="HelloShaders.cpp" />
+    <ClCompile Include="HelloTriangle.cpp" />
+    <ClCompile Include="HelloTriangleChallengeOne.cpp" />
+    <ClCompile Include="HelloTriangleChallengeThree.cpp" />
+    <ClCompile Include="HelloTriangleChallengeTwo.cpp" />
     <ClCompile Include="HelloWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shader_s.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
