@@ -3,7 +3,7 @@
 #include <iostream>
 #include "shader_s.h"
 
-namespace HelloShaders {
+namespace HelloShadersChallengeOne {
 
 	// Constants
 	const unsigned int SCR_WIDTH = 800;
@@ -53,13 +53,13 @@ namespace HelloShaders {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//Shaders//shader.vs", "Assets//Shaders//shader.fs");
+		Shader ourShader("Assets//Shaders//shader_challenge_one.vs", "Assets//Shaders//shader.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
 			// positions         // colors
 			0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
 			0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 		};
 
@@ -147,6 +147,6 @@ namespace HelloShaders {
 
 //int main() {
 //
-//	return HelloShaders::main();
+//	return HelloShadersChallengeOne::main();
 //
 //}

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "shader_s.h"
 
-namespace HelloShaders {
+namespace HelloShadersChallengeThree {
 
 	// Constants
 	const unsigned int SCR_WIDTH = 800;
@@ -53,13 +53,13 @@ namespace HelloShaders {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//Shaders//shader.vs", "Assets//Shaders//shader.fs");
+		Shader ourShader("Assets//Shaders//shader_challenge_three.vs", "Assets//Shaders//shader_challenge_three.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
 			// positions         // colors
 			0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
 			0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 		};
 
@@ -112,6 +112,7 @@ namespace HelloShaders {
 
 			// Render the triangle
 			ourShader.use();
+
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -147,6 +148,6 @@ namespace HelloShaders {
 
 //int main() {
 //
-//	return HelloShaders::main();
+//	return HelloShadersChallengeThree::main();
 //
 //}

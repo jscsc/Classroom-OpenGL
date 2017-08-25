@@ -7,7 +7,7 @@
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-namespace HellowWindow {
+namespace HelloWindow {
 
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 

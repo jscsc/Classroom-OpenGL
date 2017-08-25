@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-namespace HellowTriangle {
+namespace HelloTriangle {
 
 	// Constants
 	const unsigned int SCR_WIDTH = 800;
@@ -226,6 +226,6 @@ namespace HellowTriangle {
 //int main()
 //{
 //
-//	return HellowTriangle::main();
+//	return HelloTriangle::main();
 //
 //}
