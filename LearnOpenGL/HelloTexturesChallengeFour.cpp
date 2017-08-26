@@ -4,11 +4,14 @@
 #include "shader_s.h"
 #include "stb_image.h"
 
-namespace HelloTextures {
+namespace HelloTexturesChallengeFour {
 
 	// Constants
 	const unsigned int SCR_WIDTH = 800;
 	const unsigned int SCR_HEIGHT = 600;
+
+	// Stores how much we're seeing of either texture
+	float mixValue = 0.2f;
 
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -54,15 +57,15 @@ namespace HelloTextures {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//HelloTextures//Shaders//hello_textures_shader.vs", "Assets//HelloTextures//Shaders//hello_textures_challenge_one_shader.fs");
+		Shader ourShader("Assets//HelloTextures//Shaders//hello_textures_shader.vs", "Assets//HelloTextures//Shaders//hello_textures_challenge_four_shader.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
 			// positions          // colors           // texture coords
-			0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-			0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		   -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+			0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+			0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 		};
 
 		unsigned int indices[] = {
@@ -118,12 +121,13 @@ namespace HelloTextures {
 
 		// Tell stb_image.h to flip loaded texture's on the y-axis.
 		stbi_set_flip_vertically_on_load(true);
-												
+
 		unsigned char *data = stbi_load("Assets//HelloTextures//Textures//container.jpg", &width, &height, &nrChannels, 0);
 		if (data) {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
-		} else {
+		}
+		else {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 
@@ -148,7 +152,8 @@ namespace HelloTextures {
 			// Note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
-		} else {
+		}
+		else {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 
@@ -174,6 +179,9 @@ namespace HelloTextures {
 			glBindTexture(GL_TEXTURE_2D, texture1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, texture2);
+
+			// Set the mix value for the fragement shader
+			ourShader.setFloat("mixValue", mixValue);
 
 			// Render container
 			ourShader.use();
@@ -208,12 +216,24 @@ namespace HelloTextures {
 		// Processes user input
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
+
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+			mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+			if (mixValue >= 1.0f)
+				mixValue = 1.0f;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+			if (mixValue <= 0.0f)
+				mixValue = 0.0f;
+		}
 	}
 
 }
 
-//int main() {
-//
-//	return HelloTextures::main();
-//
-//}
+int main() {
+
+	return HelloTexturesChallengeFour::main();
+
+}

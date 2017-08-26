@@ -51,6 +51,15 @@
     <ClCompile Include="HelloTextures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HelloTexturesChallengeTwo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HelloTexturesChallengeThree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HelloTexturesChallengeFour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader_s.h">

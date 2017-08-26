@@ -4,7 +4,7 @@
 #include "shader_s.h"
 #include "stb_image.h"
 
-namespace HelloTextures {
+namespace HelloTexturesChallengeOne {
 
 	// Constants
 	const unsigned int SCR_WIDTH = 800;
@@ -59,10 +59,10 @@ namespace HelloTextures {
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
 			// positions          // colors           // texture coords
-			0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-			0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		   -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+			0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right
+			0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right
+			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 2.0f    // top left 
 		};
 
 		unsigned int indices[] = {
@@ -106,8 +106,8 @@ namespace HelloTextures {
 		glBindTexture(GL_TEXTURE_2D, texture1);
 
 		// Set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		// Set texture filtering parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -118,12 +118,13 @@ namespace HelloTextures {
 
 		// Tell stb_image.h to flip loaded texture's on the y-axis.
 		stbi_set_flip_vertically_on_load(true);
-												
+
 		unsigned char *data = stbi_load("Assets//HelloTextures//Textures//container.jpg", &width, &height, &nrChannels, 0);
 		if (data) {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
-		} else {
+		}
+		else {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 
@@ -148,7 +149,8 @@ namespace HelloTextures {
 			// Note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
-		} else {
+		}
+		else {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 
@@ -214,6 +216,6 @@ namespace HelloTextures {
 
 //int main() {
 //
-//	return HelloTextures::main();
+//	return HelloTexturesChallengeOne::main();
 //
 //}
