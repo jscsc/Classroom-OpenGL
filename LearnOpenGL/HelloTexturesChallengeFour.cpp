@@ -57,7 +57,7 @@ namespace HelloTexturesChallengeFour {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//HelloTextures//Shaders//hello_textures_shader.vs", "Assets//HelloTextures//Shaders//hello_textures_challenge_four_shader.fs");
+		Shader ourShader("Assets//Shaders//hello_textures_shader.vs", "Assets//Shaders//hello_textures_challenge_four_shader.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
@@ -122,7 +122,7 @@ namespace HelloTexturesChallengeFour {
 		// Tell stb_image.h to flip loaded texture's on the y-axis.
 		stbi_set_flip_vertically_on_load(true);
 
-		unsigned char *data = stbi_load("Assets//HelloTextures//Textures//container.jpg", &width, &height, &nrChannels, 0);
+		unsigned char *data = stbi_load("Assets//Textures//container.jpg", &width, &height, &nrChannels, 0);
 		if (data) {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
@@ -147,7 +147,7 @@ namespace HelloTexturesChallengeFour {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Load image, create texture and generate mipmaps
-		data = stbi_load("Assets//HelloTextures//Textures//awesomeface.png", &width, &height, &nrChannels, 0);
+		data = stbi_load("Assets//Textures//awesomeface.png", &width, &height, &nrChannels, 0);
 		if (data) {
 			// Note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -232,8 +232,8 @@ namespace HelloTexturesChallengeFour {
 
 }
 
-int main() {
-
-	return HelloTexturesChallengeFour::main();
-
-}
+//int main() {
+//
+//	return HelloTexturesChallengeFour::main();
+//
+//}

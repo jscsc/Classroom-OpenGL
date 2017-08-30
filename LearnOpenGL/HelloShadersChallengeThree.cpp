@@ -53,7 +53,7 @@ namespace HelloShadersChallengeThree {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//Shaders//shader_challenge_three.vs", "Assets//Shaders//shader_challenge_three.fs");
+		Shader ourShader("Assets//Shaders//hello_shaders_challenge_three.vs", "Assets//Shaders//hello_shaders_challenge_three.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {

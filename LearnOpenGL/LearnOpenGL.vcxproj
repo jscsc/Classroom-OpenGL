@@ -125,6 +125,9 @@
     <ClCompile Include="HelloTexturesChallengeFour.cpp" />
     <ClCompile Include="HelloTexturesChallengeThree.cpp" />
     <ClCompile Include="HelloTexturesChallengeTwo.cpp" />
+    <ClCompile Include="HelloTransformations.cpp" />
+    <ClCompile Include="HelloTransformationsChallengeOne.cpp" />
+    <ClCompile Include="HelloTransformationsChallengeTwo.cpp" />
     <ClCompile Include="HelloTriangle.cpp" />
     <ClCompile Include="HelloTriangleChallengeOne.cpp" />
     <ClCompile Include="HelloTriangleChallengeThree.cpp" />

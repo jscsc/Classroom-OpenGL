@@ -53,7 +53,7 @@ namespace HelloShaders {
 		}
 
 		// Build shaders
-		Shader ourShader("Assets//Shaders//shader.vs", "Assets//Shaders//shader.fs");
+		Shader ourShader("Assets//Shaders//hello_shaders_shader.vs", "Assets//Shaders//hello_shaders_shader.fs");
 
 		// Vertices of our triangle in normalized device coordinates
 		float vertices[] = {
