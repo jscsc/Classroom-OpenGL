@@ -232,7 +232,8 @@ namespace HelloTexturesChallengeFour {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloTexturesChallengeFour::main();
 //

@@ -234,8 +234,9 @@ namespace HelloTransformationsChallengeTwo {
 
 }
 
-int main() {
-
-	return HelloTransformationsChallengeTwo::main();
-
-}
+//int main()
+//{
+//
+//	return HelloTransformationsChallengeTwo::main();
+//
+//}

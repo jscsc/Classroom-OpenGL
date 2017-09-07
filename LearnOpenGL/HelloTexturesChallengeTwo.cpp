@@ -214,7 +214,8 @@ namespace HelloTexturesChallengeOne {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloTexturesChallengeOne::main();
 //

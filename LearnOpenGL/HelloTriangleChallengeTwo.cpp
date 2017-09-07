@@ -221,7 +221,8 @@ namespace HelloTriangleChallegeTwo {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloTriangleChallegeTwo::main();
 //

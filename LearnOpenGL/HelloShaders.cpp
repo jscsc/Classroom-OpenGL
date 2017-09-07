@@ -145,7 +145,8 @@ namespace HelloShaders {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloShaders::main();
 //

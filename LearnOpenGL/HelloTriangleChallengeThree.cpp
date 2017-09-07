@@ -255,6 +255,7 @@ namespace HelloTriangleChallegeThree {
 }
 
 //int main() {
+//{
 //
 //	return HelloTriangleChallegeThree::main();
 //

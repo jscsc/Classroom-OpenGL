@@ -212,7 +212,8 @@ namespace HelloTextures {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloTextures::main();
 //

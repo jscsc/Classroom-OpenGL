@@ -145,7 +145,8 @@ namespace HelloShadersChallengeOne {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloShadersChallengeOne::main();
 //

@@ -149,7 +149,8 @@ namespace HelloShadersChallengeTwo {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloShadersChallengeTwo::main();
 //

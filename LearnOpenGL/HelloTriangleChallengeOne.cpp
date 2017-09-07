@@ -212,7 +212,8 @@ namespace HelloTriangleChallegeOne {
 
 }
 
-//int main() {
+//int main()
+//{
 //
 //	return HelloTriangleChallegeOne::main();
 //
