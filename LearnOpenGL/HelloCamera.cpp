@@ -3,20 +3,33 @@
 #include <iostream>
 #include "shader_m.h"
 #include "stb_image.h"
+#include "camera.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace HelloCoordinateSystems {
+namespace HelloCamera {
 
-	// Constants
+	// Functions
+	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	void processInput(GLFWwindow *window);
+
+	// Settings
 	const unsigned int SCR_WIDTH = 800;
 	const unsigned int SCR_HEIGHT = 600;
 
-	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-	void processInput(GLFWwindow *window);
+	// Camera
+	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+	float lastX = SCR_WIDTH / 2.0f;
+	float lastY = SCR_HEIGHT / 2.0f;
+	bool firstMouse = true;
+	
+	// Timing
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
 
 	int main()
 	{
@@ -49,6 +62,13 @@ namespace HelloCoordinateSystems {
 		// window, the viewport is adjusted as well.
 		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+		// Set camera callbacks
+		glfwSetCursorPosCallback(window, mouse_callback);
+		glfwSetScrollCallback(window, scroll_callback);
+
+		// Tell GLFW to capture our mouse
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		// Initialize GLAD (the thing that managers function pointers for OpenGL)
 		// before we call any OpenGL function
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -63,14 +83,7 @@ namespace HelloCoordinateSystems {
 		// Build shaders
 		Shader ourShader("Assets//Shaders//hello_coordinate_systems_shader.vs", "Assets//Shaders//hello_coordinate_systems_shader.fs");
 
-		// Vertices of our triangle in normalized device coordinates
-		//float vertices[] = {
-		//	// positions          // texture coords
-		//	0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-		//	0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-		//	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-		//	-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
-		//};
+		// Vertices of our boxes
 		float vertices[] = {
 			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -128,8 +141,7 @@ namespace HelloCoordinateSystems {
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 		};
 
-		// Generate IDs for Vertex Array Objects, vertex buffer objects, and
-		// Element Buffer Objects
+		// Generate IDs for Vertex Array Objects and vertex buffer objects
 		unsigned int VBO, VAO;
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
@@ -199,8 +211,7 @@ namespace HelloCoordinateSystems {
 			// Note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else {
+		} else {
 			std::cout << "Failed to load texture" << std::endl;
 		}
 
@@ -214,6 +225,11 @@ namespace HelloCoordinateSystems {
 		// game / render loop
 		while (!glfwWindowShouldClose(window))
 		{
+			// Per-frame time logic
+			float currentFrame = (float) glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
+
 			// Input
 			processInput(window);
 
@@ -230,18 +246,14 @@ namespace HelloCoordinateSystems {
 			// Activate shader
 			ourShader.use();
 
-			glm::mat4 view;
-			glm::mat4 projection;
 
-			// Note that we're translating the scene in the reverse direction of where we want to move
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-			projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
-			// Pass transformation matrices to the shader
-			ourShader.setMat4("view", view);
-			// Note: currently we set the projection matrix each frame, but since the
-			// projection matrix rarely changes it's often best practive to set it outside the main loop only once.
+			// Pass projection matrix to shader (note that in this case it could change every frame)
+			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
 			ourShader.setMat4("projection", projection);
+
+			// Camera/View transformation
+			glm::mat4 view = camera.GetViewMatrix();
+			ourShader.setMat4("view", view);
 
 			// Render boxes
 			glBindVertexArray(VAO);
@@ -249,11 +261,7 @@ namespace HelloCoordinateSystems {
 				// Calculate the model matrix for each object and pass it to the shader before drawing
 				glm::mat4 model;
 				model = glm::translate(model, cubePositions[i]);
-				float angle;
-				if (i % 3 == 0)
-					angle = 20.0f * i;
-				else
-					angle = (float)glfwGetTime() * 25.0f;
+				float angle = 20.0f * i;
 				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 				ourShader.setMat4("model", model);
 
@@ -274,6 +282,7 @@ namespace HelloCoordinateSystems {
 		return 0;
 	}
 
+	// GLFW: Whenever the window size changed (by OS or user resize) this callback function executes
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	{
 		// Tell OpenGL the size of the rendering window so OpenGL knows how we want to display
@@ -281,19 +290,56 @@ namespace HelloCoordinateSystems {
 		glViewport(0, 0, width, height);
 	}
 
-
+	// Process all input : query GLFW whether relevant keys are pressed / released this frame and react accordingly
 	void processInput(GLFWwindow *window)
 	{
-		// Processes user input
+		
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
+
+		// Control camrea
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			camera.ProcessKeyboard(FORWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			camera.ProcessKeyboard(BACKWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			camera.ProcessKeyboard(LEFT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
 
+	// GLFW: Whenever the mouse moves, this callback is called
+	void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+	{
+		float xposf = (float) xpos;
+		float yposf = (float) ypos;
+
+		if (firstMouse)
+		{
+			lastX = xposf;
+			lastY = yposf;
+			firstMouse = false;
+		}
+
+		float xoffset = xposf - lastX;
+		float yoffset = lastY - yposf; // Reversed since y-coordinates go from bottom to top
+
+		lastX = xposf;
+		lastY = yposf;
+
+		camera.ProcessMouseMovement(xoffset, yoffset);
+	}
+
+	// GLFW: Whenever the mouse scroll wheel scrolls, this callback is called
+	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		camera.ProcessMouseScroll((float) yoffset);
+	}
 }
 
-//int main()
-//{
-//
-//	return HelloCoordinateSystems::main();
-//
-//}
+int main()
+{
+
+	return HelloCamera::main();
+
+}
