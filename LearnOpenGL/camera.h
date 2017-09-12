@@ -63,8 +63,37 @@ public:
 
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
-	{
-		return glm::lookAt(Position, Position + Front, Up);
+	{	
+		// 1. Position = known
+		// 2. Calculate cameraDirection
+		glm::vec3 target = Position + Front;
+		glm::vec3 zaxis = glm::normalize(Position - target);
+		// 3. Get positive right axis vector
+		glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(WorldUp), zaxis));
+		// 4. Calculate camera up vector
+		glm::vec3 yaxis = glm::cross(zaxis, xaxis);
+
+		// Create translation and rotation matrix
+		// In glm we access elements as mat[col][row] due to column-major layout
+		glm::mat4 translation; // Identity matrix by default
+		translation[3][0] = -Position.x; // Third column, first row
+		translation[3][1] = -Position.y;
+		translation[3][2] = -Position.z;
+		glm::mat4 rotation;
+		rotation[0][0] = xaxis.x; // First column, first row
+		rotation[1][0] = xaxis.y;
+		rotation[2][0] = xaxis.z;
+		rotation[0][1] = yaxis.x; // First column, second row
+		rotation[1][1] = yaxis.y;
+		rotation[2][1] = yaxis.z;
+		rotation[0][2] = zaxis.x; // First column, third row
+		rotation[1][2] = zaxis.y;
+		rotation[2][2] = zaxis.z;
+
+		// Return lookAt matrix as combination of translation and rotation matrix
+		return rotation * translation;
+
+		//return glm::lookAt(Position, Position + Front, Up);
 	}
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -79,6 +108,7 @@ public:
 			Position -= Right * velocity;
 		if (direction == RIGHT)
 			Position += Right * velocity;
+
 	}
 
 	// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
